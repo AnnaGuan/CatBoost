@@ -8,7 +8,8 @@ def input_synergy_data(dataset):
     function_mapping={'NCI_ALMANAC':'input_data_1', 'ONeil':'input_data_2'}
     def input_data_1():
         data_1 = pd.read_csv(r'../data/synergy_data/NCI_ALMANAC/ComboDrugGrowth_Nov2017.csv',low_memory=False)
-        data_2=data_1.groupby(['SCREENER','NSC1','NSC2','CELLNAME']).agg({"SCORE":'mean',"STUDY":'count'}).reset_index().rename(columns={'SCORE':'MEAN_SCORE','STUDY':'count'}).astype({'NSC1':'int32','NSC2':'int32'})
+        data_2=data_1.groupby(['SCREENER','NSC1','NSC2','CELLNAME']).agg({"SCORE":'mean',"STUDY":'count'}).\
+                reset_index().rename(columns={'SCORE':'MEAN_SCORE','STUDY':'count'}).astype({'NSC1':'int32','NSC2':'int32'})
         data_2=data_2.dropna()
         data_2=data_2[data_2['SCREENER'] != '1A']
         data_2=data_2[['NSC1','NSC2','CELLNAME','MEAN_SCORE']].rename(columns={'NSC1':'drug1','NSC2':'drug2','CELLNAME':'cell','MEAN_SCORE':'score'})
@@ -33,7 +34,7 @@ def input_cellline_data(dataset):
                                             'Cytoband','RefSeq(mRNA)','RefSeq(protein)','MirBase Name',"Entrez gene id"],inplace=True)
 
             if postfix != 'mir':
-                data.set_index('Entrez gene id',inplace=True)#set_index：列索引转化为行索引
+                data.set_index('Entrez gene id',inplace=True)#set_index: The column index is transformed into the row index
             else:
                 data.set_index('miRNA Accession #',inplace=True)
 
